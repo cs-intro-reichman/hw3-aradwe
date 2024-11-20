@@ -6,45 +6,152 @@
 public class Algebra {
 	public static void main(String args[]) {
 	    // Tests some of the operations
+	    System.out.println("---------------------");
+		System.out.println("Test plus func:");
+		System.out.println(plus(-4,-3));   // -4 + -3
+		System.out.println(plus(-2,3));   // -2 + 3
+	    System.out.println(plus(2,-3));   // 2 + -3
 	    System.out.println(plus(2,3));   // 2 + 3
+		System.out.println("---------------------");
+		System.out.println("Test minus func:");
 	    System.out.println(minus(7,2));  // 7 - 2
    		System.out.println(minus(2,7));  // 2 - 7
- 		System.out.println(times(3,4));  // 3 * 4
+		System.out.println(minus(-7,-2));  // -7 - -2
+		System.out.println(minus(-7,2));  // -7 - 2
+		System.out.println(minus(7,-2));  // 7 - -2
+		System.out.println("---------------------");
+		System.out.println("Test times func:");
+		System.out.println(times(3,4));  // 3 * 4
+		System.out.println(times(-3,4));  // -3 * 4
+		System.out.println(times(3,-4));  // 3 * -4
+		System.out.println(times(-3,-4));  // -3 * -4
    		System.out.println(plus(2,times(4,2)));  // 2 + 4 * 2
-   		System.out.println(pow(5,3));      // 5^3
+   		System.out.println("---------------------");
+		System.out.println("Test pow func:");
+		System.out.println(pow(5,3));      // 5^3
    		System.out.println(pow(3,5));      // 3^5
-   		System.out.println(div(12,3));   // 12 / 3    
+   		System.out.println("---------------------");
+		System.out.println("Test div func:");
+		System.out.println(div(12,3));   // 12 / 3    
 		System.out.println(div(-12,3));   // -12 / 3    
    		System.out.println(div(5,5));    // 5 / 5  
    		System.out.println(div(25,7));   // 25 / 7
-   		System.out.println(mod(25,7));   // 25 % 7
+   		System.out.println("---------------------");
+		System.out.println("Test mod func:");
+		System.out.println(mod(25,7));   // 25 % 7
    		System.out.println(mod(120,6));  // 120 % 6    
 		System.out.println(mod(17,3));  // 17 % 3    
-   		System.out.println(sqrt(36));
+		System.out.println("---------------------");
+		System.out.println("Test sqrt func:");
+		System.out.println(sqrt(36));
 		System.out.println(sqrt(263169));
    		System.out.println(sqrt(76123));
 	}  
 
 	// Returns x1 + x2
 	public static int plus(int x1, int x2) {
-		for(int i = 0; i < x2; i++)
-		x1++;
-		return x1;
+		boolean isX1Negative = x1 < 0;
+		boolean isX2Negative = x2 < 0;
+
+		// Handle two negative numbers
+		if (isX1Negative && isX2Negative) {
+			x1 = -x1;
+			x2 = -x2;
+			for(int i = 0; i < x2; i++){
+				x1++;
+			}
+			return -x1;	// Return negative result for both negative inputs		
+		}
+		// Handle x1 is negative and x2 positive
+		else if(isX1Negative){
+			x1 = -x1;
+			return minus(x2, x1);
+		}
+		// Handle x1 is positive and x2 negative
+		else if(isX2Negative){
+			x2 = -x2;
+			return minus(x1, x2);
+		}
+		// Both are positive, add normally
+		else{
+			for(int i = 0; i < x2; i++)
+			x1++;
+			return x1;
+		}
 	}
 
 	// Returns x1 - x2
 	public static int minus(int x1, int x2) {
-		for(int i = 0; i < x2; i++)
-		x1--;
-		return x1;
+		boolean isX1Negative = x1 < 0;
+		boolean isX2Negative = x2 < 0;
+
+		// Handle two negative numbers
+		if (isX1Negative && isX2Negative) {
+			x1 = -x1;
+			x2 = -x2;
+			for(int i = 0; i < x2; i++){
+				x1--;
+			}
+			return -x1;
+		}
+		// Handle x1 is negative and x2 positive
+		else if(isX1Negative){
+			x1 = -x1;
+			return -plus(x1, x2);
+		}
+		// Handle x1 is positive and x2 negative
+		else if(isX2Negative){
+			x2 = -x2;
+			return plus(x1, x2);
+		}
+		// Both are positive, add normally
+		else{
+			for(int i = 0; i < x2; i++){
+				x1--;
+			}
+			return x1;
+		}
 	}
 
 	// Returns x1 * x2
 	public static int times(int x1, int x2) {
+		boolean isX1Negative = x1 < 0;
+		boolean isX2Negative = x2 < 0;
 		int x3 = 0;
-		for(int i = 0; i < x2; i++)
-		x3 = plus(x3, x1);
-		return x3;
+
+		// Handle two negative numbers
+		if (isX1Negative && isX2Negative) {
+			x1 = -x1;
+			x2 = -x2;
+			for(int i = 0; i < x2; i++){
+				x3 = plus(x3, x1);
+			}
+			return x3;
+		}
+
+		// Handle x1 is negative and x2 positive
+		else if (isX1Negative){
+			x1 = -x1;
+			for(int i = 0; i < x2; i++){
+				x3 = plus(x3, x1);
+			}
+			return -x3;
+		}
+		// Handle x1 is positive and x2 negative
+		else if (isX2Negative){
+			x2 = -x2;
+			for(int i = 0; i < x2; i++){
+				x3 = plus(x3, x1);
+			}
+			return -x3;
+		}
+		// Handle two positive numbers
+		else{
+			for(int i = 0; i < x2; i++){
+				x3 = plus(x3, x1);
+			}
+			return x3;
+		}
 	}
 
 	// Returns x^n (for n >= 0)
