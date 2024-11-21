@@ -13,7 +13,6 @@ public class LoanCalc {
 		double rate = Double.parseDouble(args[1]);
 		int n = Integer.parseInt(args[2]);
 		System.out.println("Loan = " + loan + ", interest rate = " + rate + "%, periods = " + n);
-		endBalance(loan, rate, n, 1);
 
 		// Computes the periodical payment using brute force search
 		System.out.print("\nPeriodical payment, using brute force: ");
@@ -33,7 +32,6 @@ public class LoanCalc {
 		for(int i = 0; i < n; i++){
 			loan = (loan - payment) * rate;
 		}
-		//System.out.println("test: " + loan);
 		return loan;
 	}
 	
@@ -47,7 +45,8 @@ public class LoanCalc {
 		double payment = loan / n;
 		double increment = 0.0001;
 		double balance = endBalance(loan, rate, n, payment); // Compute initial balance
-		while ((Math.abs(balance) >= epsilon) && (payment <= loan)){
+		
+		while ((Math.abs(balance) >= epsilon && payment <= loan)){
 			payment += increment;
 			balance = endBalance(loan, rate, n, payment);
 			iterationCounter++;
@@ -62,19 +61,19 @@ public class LoanCalc {
 	// Side effect: modifies the class variable iterationCounter.
     public static double bisectionSolver(double loan, double rate, int n, double epsilon) {  
 		iterationCounter = 0; // reset the counter value
-		double L = n / loan;
-		double H = loan;
-		double payment = (L + H) / 2.0;
+		double L = loan / n; // Initialize low bound with loan divided by number of payments
+		double H = loan; // Initialize high bound as loan amount
+		double payment = (L + H) / 2.0; // Compute initial balance
 		double balance = endBalance(loan, rate, n, payment); // Compute initial balance
 
 		while (Math.abs(H - L) > epsilon){
 			if(balance > 0){
-				L = payment;
+				L = payment; // Move lower bound
 			}
 			else{
-				H = payment;
+				H = payment; // Move upper bound
 			}
-			payment = (L + H) / 2;
+			payment = (L + H) / 2.0; // Midpoint
 			balance = endBalance(loan, rate, n, payment);
 			iterationCounter++;
 		}
