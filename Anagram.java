@@ -28,22 +28,92 @@ public class Anagram {
 
 	// Returns true if the two given strings are anagrams, false otherwise.
 	public static boolean isAnagram(String str1, String str2) {
-		// Replace the following statement with your code
-		return false;
+		// Process both strings to lowercase and remove non-letters
+		String processedStr1 = preProcess(str1);
+		String processedStr2 = preProcess(str2);
+
+		// Remove spaces from processed strings
+		processedStr1 = removeSpaces(processedStr1);
+		processedStr2 = removeSpaces(processedStr2);
+
+		// If the number of chars is different - it is not an anagram
+		if (processedStr1.length() != processedStr2.length()) {
+			return false;			
+		}
+
+		// Loop over the characters in the first string
+		for(int i = 0; i < processedStr1.length(); i++){
+			char currentLetter = processedStr1.charAt(i);
+			
+			// If currentLetter is in processedStr2, remove it
+			int indexInStr2 = processedStr2.indexOf(currentLetter);
+			if (indexInStr2 != -1) {
+				// Remove the character from processedStr2 to avoid double-counting
+				processedStr2 = processedStr2.substring(0, indexInStr2) + 
+				processedStr2.substring(indexInStr2 + 1);
+			}
+			else{
+				return false; // If the character isn't found, it's not an anagram
+			}
+		}
+		return true; // If all characters from str1 are found in str2, it's an anagram
 	}
 	   
 	// Returns a preprocessed version of the given string: all the letter characters are converted
 	// to lower-case, and all the other characters are deleted, except for spaces, which are left
 	// as is. For example, the string "What? No way!" becomes "whatnoway"
 	public static String preProcess(String str) {
-		// Replace the following statement with your code
-		return "";
+		// Convert all the letters to lowercase
+		str = str.toLowerCase();
+		
+		String processedStr = "";
+		String validChars = "abcdefghijklmnopqrstuvwxyz0123456789 ";
+		
+		// Iterate through the abc to eliminate non-letters from the final output string
+		for(int i = 0; i < str.length(); i++){
+			char currentLetter = str.charAt(i);
+			if (validChars.indexOf(str.charAt(i)) != -1) {
+				processedStr += currentLetter;
+			}
+		}
+		return processedStr;
 	} 
 	   
 	// Returns a random anagram of the given string. The random anagram consists of the same
 	// characters as the given string, re-arranged in a random order. 
 	public static String randomAnagram(String str) {
-		// Replace the following statement with your code
-		return "";
+		// Convert all the letters to lowercase and remove non-letters
+		String processedInputStr = preProcess(str);
+		
+		String newRandomStr = "";
+		int counter = processedInputStr.length();
+
+		while (counter > 0) {
+			// Generate a random index in the remaining letters range
+			int randomIndex = (int)(Math.random() * counter);
+
+			// Add the selected character to the result string
+			newRandomStr += processedInputStr.charAt(randomIndex);
+
+			// Remove the selected character from the input string
+			processedInputStr = processedInputStr.substring(0, randomIndex) + 
+			processedInputStr.substring(randomIndex + 1);
+
+			 // Decrease the counter
+			 counter--;	
+		}	
+		return newRandomStr;
 	}
+
+	// Helper function to remove spaces from a string
+	public static String removeSpaces(String str) {
+		String result = "";
+		for (int i = 0; i < str.length(); i++) {
+			char currentLetter = str.charAt(i);
+			if (currentLetter != ' ') {
+				result += currentLetter;
+			}
+		}
+		return result;
+}
 }
