@@ -62,12 +62,12 @@ public class Anagram {
 		str = str.toLowerCase();
 		
 		String processedStr = "";
-		String abcLetters = "abcdefghijklmnopqrstuvwxyz0123456789";
+		String validChars = "abcdefghijklmnopqrstuvwxyz0123456789 ";
 		
 		// Iterate through the abc to eliminate non-letters from the final output string
 		for(int i = 0; i < str.length(); i++){
 			char currentLetter = str.charAt(i);
-			if (abcLetters.indexOf(str.charAt(i)) != -1) {
+			if (validChars.indexOf(str.charAt(i)) != -1) {
 				processedStr += currentLetter;
 			}
 		}
