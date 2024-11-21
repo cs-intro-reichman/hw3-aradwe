@@ -32,6 +32,11 @@ public class Anagram {
 		String processedStr1 = preProcess(str1);
 		String processedStr2 = preProcess(str2);
 
+		// Remove spaces from processed strings
+		processedStr1 = removeSpaces(processedStr1);
+		processedStr2 = removeSpaces(processedStr2);
+
+		// If the number of chars is different - it is not an anagram
 		if (processedStr1.length() != processedStr2.length()) {
 			return false;			
 		}
@@ -99,4 +104,16 @@ public class Anagram {
 		}	
 		return newRandomStr;
 	}
+
+	// Helper function to remove spaces from a string
+	public static String removeSpaces(String str) {
+		String result = "";
+		for (int i = 0; i < str.length(); i++) {
+			char currentLetter = str.charAt(i);
+			if (currentLetter != ' ') {
+				result += currentLetter;
+			}
+		}
+		return result;
+}
 }
