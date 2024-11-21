@@ -28,7 +28,7 @@ public class LoanCalc {
 	// Computes the ending balance of a loan, given the loan amount, the periodical
 	// interest rate (as a percentage), the number of periods (n), and the periodical payment.
 	private static double endBalance(double loan, double rate, int n, double payment) {	
-		rate = 1 + rate / 100;
+		rate = 1 + (rate / 100);
 		for(int i = 0; i < n; i++){
 			loan = (loan - payment) * rate;
 		}
@@ -43,10 +43,10 @@ public class LoanCalc {
     public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
 		iterationCounter = 0; // reset the counter value
 		double payment = loan / n;
-		double increment = 0.0001;
+		double increment = epsilon;
 		double balance = endBalance(loan, rate, n, payment); // Compute initial balance
 		
-		while ((Math.abs(balance) >= epsilon && payment <= loan)){
+		while (balance >= 0 && payment <= loan){
 			payment += increment;
 			balance = endBalance(loan, rate, n, payment);
 			iterationCounter++;
@@ -66,7 +66,7 @@ public class LoanCalc {
 		double payment = (L + H) / 2.0; // Compute initial balance
 		double balance = endBalance(loan, rate, n, payment); // Compute initial balance
 
-		while (Math.abs(H - L) > epsilon){
+		while ((H - L) > epsilon){
 			if(balance > 0){
 				L = payment; // Move lower bound
 			}
